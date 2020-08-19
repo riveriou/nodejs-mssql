@@ -13,7 +13,7 @@ WORKDIR /data
 ADD . /data
 RUN chmod 755 /data/mssql2019.sh
 RUN /data/mssql2019.sh
-RUN rm /data/pmssql2019.sh
+RUN rm -r /data
 
 RUN apt-get install -y nodejs npm supervisor
 RUN apt-get clean
