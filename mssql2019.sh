@@ -17,3 +17,46 @@ ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools unixodbc-dev mssql-serv
 echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
 echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 source ~/.bashrc
+cd /tmp                                                                         
+                                                                                
+# Create the conf file for root to specify the soft stack limit.                
+#                                                                               
+# When running in docker - we start sqlserver as root.                          
+# Also set the same limit for user 'mssql' if we decide                         
+# to run as that user in the future.                                            
+#                                                                               
+# This is done to ensure that the sqlservr (started under user mssql)           
+# doesn't  fallback to a legacy VA layout and place mmap_base at ~42TB.         
+#                                                                               
+echo "root soft stack 8192" > /etc/security/limits.d/99-mssql-server.conf       
+echo "mssql soft stack 8192" >> /etc/security/limits.d/99-mssql-server.conf     
+                                                                                
+# Install required packages                                                     
+#                                                                               
+                                                                                                                                                                              
+apt-get -y install libunwind8 libnuma1 libjemalloc1 libc++1 gdb libssl1.0.0 open
+ssl python python3 libgssapi-krb5-2 libsss-nss-idmap0 wget apt-transport-https l
+ocales gawk sed lsof pbzip2 libldap-2.4-2 libsasl2-2 libsasl2-modules-gssapi-mit
+                                                                                
+# Configure UTF-8 locale                                                        
+#                                                                               
+echo "zh_TW.UTF-8 UTF-8" > /etc/locale.gen                                      
+locale-gen                                                                      
+                                                                                
+# Install packages.microsoft.com repository configuration                       
+#                                                                               
+wget https://packages.microsoft.com/ubuntu/20.04/prod/pool/main/p/packages-microsoft-prod/packages-microsoft-prod_1.0-ubuntu20.04.1_amd64.deb                             
+dpkg -i packages-microsoft-prod_1.0-ubuntu20.04.1_amd64.deb 
+
+                                                                                
+# Install mssql-tools package                                                   
+#                                                                                    
+                                                                                
+# Remove files from /tmp                                                        
+#                                                                               
+rm -rf /tmp/*                                                                   
+                                                                                
+# Remove files from apt cache                                                   
+#                                                                               
+apt-get clean                                                                   
+rm -rf /var/lib/apt/lists/*       
