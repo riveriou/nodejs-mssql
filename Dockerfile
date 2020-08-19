@@ -4,6 +4,10 @@ MAINTAINER River riou
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
+ENV ACCEPT_EULA N
+ENV MSSQL_PID standard
+ENV MSSQL_SA_PASSWORD sasa
+ENV MSSQL_TCP_PORT 1433
 
 
 RUN ln -snf /usr/share/zoneinfo/Asia/Taipei /etc/localtime && echo Asia/Taipei > /etc/timezone
