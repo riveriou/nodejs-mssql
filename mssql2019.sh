@@ -58,5 +58,4 @@ rm -rf /tmp/*
                                                                                 
 # Remove files from apt cache                                                   
 #                                                                               
-apt-get clean                                                                   
-rm -rf /var/lib/apt/lists/*       
+   
