@@ -21,6 +21,7 @@ RUN rm -r /data
 
 RUN apt-get install -y nodejs npm supervisor
 RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*    
 
 RUN echo "[supervisord] " >> /etc/supervisor/conf.d/supervisord.conf
 RUN echo "nodaemon=true" >> /etc/supervisor/conf.d/supervisord.conf
